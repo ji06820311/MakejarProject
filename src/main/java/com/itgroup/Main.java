@@ -1,17 +1,41 @@
 package com.itgroup;
 
+import java.util.Scanner;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scan = new Scanner(System.in);
+        MemberManager manager = new MemberManager();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (true) {
+            System.out.println("메뉴 선택");
+            System.out.println("0:종료, 1:목록 조회, 2:가입, 3:수정, 4:총회원수, 5:탈퇴, 6:회원정보, 7:xx, 8:xx");
+            int menu = scan.nextInt(); // 선택한 메뉴
+            switch (menu) {
+                case 0:
+                    System.out.println("프로그램을 종료합니다");
+                    System.exit(0); // 운영체제에게 종료됨을 알리고 빠져 나가기
+                    break;
+                case 1:
+                    manager.selestAll();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    manager.getSize();
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+            }
+
         }
     }
 }
