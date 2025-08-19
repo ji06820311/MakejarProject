@@ -7,15 +7,15 @@ public class Member {
     private String gender;
     private String birth;
     private String marriage;
-    private String salary;
+    private int salary;
     private String address;
     private String manager;
 
-    public Member(){
+    public Member() {
 
     }
 
-    public Member(String id, String name, String password, String gender, String birth, String marriage, String salary, String address, String manager) {
+    public Member(String id, String name, String password, String gender, String birth, String marriage, int salary, String address, String manager) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -51,7 +51,7 @@ public class Member {
         return marriage;
     }
 
-    public String getSalary() {
+    public int getSalary() {
         return salary;
     }
 
@@ -87,7 +87,7 @@ public class Member {
         this.marriage = marriage;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 
