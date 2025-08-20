@@ -4,13 +4,83 @@ import com.itgroup.bean.Member;
 import com.itgroup.dao.MemberDao;
 
 import java.util.List;
+import java.util.Scanner;
 
 // 메인 클래스 대신 실제 모든 업무를 총 잭임지는 매니저 클래스
 public class MemberManager {
-    private MemberDao dao = null;
+    private MemberDao dao = null; // 실제 데이터 베이스와 연동하는 디오 클래스
+    private Scanner scan = null; // 회원 정보 입력 받기 위한 스캐너 장치
 
     public MemberManager() {
         this.dao = new MemberDao();
+        this.scan = new Scanner(System.in);
+    }
+
+    public void updateDate() {
+        int cnt = -1;
+
+        System.out.println("수정하고자 하는 회원 id 입력 : ");
+        String findId = scan.next(); // yusin 입력
+
+        //여기서 bean은 이전에 입력했던 나의 정보입니다.
+        Member bean = dao.getMemberOne(findId);
+
+        // 편의상 내 이름과 결혼 여부를 변경해 보겠습니다.
+        System.out.println("이름 입력 :");
+        String name = scan.next();
+
+        System.out.println("결혼 여부 입력 :");
+        String marriage = scan.next();
+
+        bean.setName(name);
+        bean.setMarriage(marriage);
+
+        cnt = dao.updataData(bean);
+
+        if (cnt == -1){
+            System.out.println("업데이트 실패");
+
+        }else if(cnt == 1){
+            System.out.println("업데이트 성공");
+
+        }else {
+
+        }
+    }
+
+    public void insertData() {
+        Member bean = new Member();
+        int cnt = 1;
+
+        // 편의상 2~3개만 입력 받도록 합니다.
+        System.out.println("id 입력 :");
+        String id = scan.next();
+
+        System.out.println("이름 입력 :");
+        String name = scan.next();
+
+        //다음은 회원 가입 페이지에서 가입한 내용입니다.
+        bean.setId(id);
+        bean.setName(name);
+        bean.setPassword("abc123");
+        bean.setGender("남자");
+        bean.setBirth("2025/08/20");
+        bean.setMarriage("결혼");
+        bean.setSalary(100);
+        bean.setAddress("서대문");
+        bean.setManager(null);
+
+        cnt = dao.insertData(bean);
+
+        if(cnt == -1){
+            System.out.println("회원 가입 실패");
+
+        }else if(cnt == 1){
+            System.out.println("회원 아이디 "+ id + "로 가입 성공");
+
+        }else {
+
+        }
     }
 
     public void getMemberOne() {
@@ -81,6 +151,7 @@ public class MemberManager {
         }
         System.out.println(message);
     }
+
 
 
 }

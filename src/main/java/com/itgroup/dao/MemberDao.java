@@ -21,6 +21,96 @@ public class MemberDao {
         }
     }
 
+    public int updataData(Member bean) {
+        // 수정된 나의 정보 bean 사용하여 데이터 베이스에 수정합니다.
+        int cnt = -1;
+
+        String sql = "update members set name = ?,password = ?, gender = ?, birth = ?, marriage = ?, salary = ?, address = ?, manager = ?";
+        sql += " where id = ? ";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn= this.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, bean.getName());
+            pstmt.setString(2, bean.getPassword());
+            pstmt.setString(3, bean.getGender());
+            pstmt.setString(4, bean.getBirth());
+            pstmt.setString(5, bean.getMarriage());
+            pstmt.setInt(6, bean.getSalary());
+            pstmt.setString(7, bean.getAddress());
+            pstmt.setString(8, bean.getManager());
+            pstmt.setString(9, bean.getId());
+
+            cnt = pstmt.executeUpdate();
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }finally {
+            try {
+                if(pstmt != null){pstmt.close();}
+                if(conn != null){conn.close();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return cnt;
+    }
+
+    public int insertData(Member bean) {
+        //웹 페이제어서 회원 정보를 입력하고 '가입' 버툰울 눌렸습니다.
+        int cnt = -1;
+
+        String sql = "insert into members(id, name, password, gender, birth, marriage, salary, address, manager)";
+        sql += " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = this.getConnection();
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, bean.getId());
+            pstmt.setString(2, bean.getName());
+            pstmt.setString(3, bean.getPassword());
+            pstmt.setString(4, bean.getGender());
+            pstmt.setString(5, bean.getBirth());
+            pstmt.setString(6, bean.getMarriage());
+            pstmt.setInt(7, bean.getSalary());
+            pstmt.setString(8, bean.getAddress());
+            pstmt.setString(9, bean.getManager());
+
+            cnt = pstmt.executeUpdate();
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }finally {
+            try {
+                if(pstmt != null){pstmt.close();}
+                if(conn != null){conn.close();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return cnt;   //리턴은 제일 먼저 적는게 좋음
+    }
+
     public Connection getConnection() {
         Connection conn = null; //접속 객체
 
@@ -98,7 +188,7 @@ public class MemberDao {
                 bean.setName(rs.getString("name"));
                 bean.setPassword(rs.getString("password"));
                 bean.setGender(rs.getString("gender"));
-                bean.setBirth(rs.getString("birth"));
+                bean.setBirth(String.valueOf(rs.getDate("birth")));
                 bean.setMarriage(rs.getString("marriage"));
                 bean.setSalary(rs.getInt("salary"));
                 bean.setAddress(rs.getString("address"));
@@ -265,6 +355,7 @@ public class MemberDao {
 
         return members;
     }
+
 
 
 }
