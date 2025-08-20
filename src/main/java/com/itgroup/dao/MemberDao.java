@@ -7,18 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 //데이터 베이스와 직접 연동하여 CRUD 작업을 수행하시는 DAO 클래스
-public class MemberDao {
+public class MemberDao extends SuperDao {
     public MemberDao() {
-        // 드라이버는 OracleDriver 클래스는 ojdbc6.jar 파일에 포함되어 있는 자바 클래스입니다.
-        String drive = "oracle.jdbc.driver.OracleDriver";
-
-        try {
-            Class.forName(drive); // 동적 객체 생성하는 문법입니다.
-
-        } catch (ClassNotFoundException e) {
-            System.out.println("해당 드라이버가 존재하지 않습니다.");
-            throw new RuntimeException(e);
-        }
+        
     }
 
     public int updataData(Member bean) {
@@ -32,7 +23,7 @@ public class MemberDao {
         PreparedStatement pstmt = null;
 
         try {
-            conn= this.getConnection();
+            conn= super.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, bean.getName());
@@ -77,7 +68,7 @@ public class MemberDao {
         PreparedStatement pstmt = null;
 
         try {
-            conn = this.getConnection();
+            conn = super.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, bean.getId());
@@ -111,23 +102,6 @@ public class MemberDao {
         return cnt;   //리턴은 제일 먼저 적는게 좋음
     }
 
-    public Connection getConnection() {
-        Connection conn = null; //접속 객체
-
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String id = "oraman";
-        String password = "oracle";
-
-        try {
-            conn = DriverManager.getConnection(url, id, password);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return conn;
-    }
-
     public int getSize() {
         String sql = "select count(*) as cnt from members ";
         PreparedStatement pstmt = null;
@@ -135,7 +109,7 @@ public class MemberDao {
         Connection conn = null;
         int cnt = 0;
         try {
-            conn = this.getConnection();
+            conn = super.getConnection();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -176,7 +150,7 @@ public class MemberDao {
         String sql = "select * from members where id = ? ";
 
         try {
-            conn = this.getConnection();
+            conn = super.getConnection();
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, id);
@@ -223,7 +197,7 @@ public class MemberDao {
         Connection conn = null;
 
         try {
-            conn = this.getConnection();
+            conn = super.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
 
@@ -261,7 +235,7 @@ public class MemberDao {
         String sql = "select * from members order by name asc";
 
         try {
-            conn = this.getConnection();
+            conn = super.getConnection();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -316,7 +290,7 @@ public class MemberDao {
         Connection conn = null;
 
         try {
-            conn = this.getConnection();                 // 1. DB 연결
+            conn = super.getConnection();                 // 1. DB 연결
             pstmt = conn.prepareStatement(sql);          // 2. SQL 실행 준비
             pstmt.setString(1, gender);                  // 2-1. ? 바인딩
             rs = pstmt.executeQuery();                   // 2-2. SQL 실행
